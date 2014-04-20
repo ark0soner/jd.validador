@@ -1,0 +1,4 @@
+validadorJida
+=============
+
+Validador javascript
