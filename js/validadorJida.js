@@ -10,7 +10,9 @@
  *  */
 
 
-
+if(typeof(jd)=='undefined'){
+    jd = function(){return true;};
+    }
 /**
  * Json con validaciones disponibles, cada validación contiene la expresión regular para ejecutarse
  * y un mensaje generico.
@@ -139,7 +141,7 @@ jd.validador.prototype={
                 }
                 
             });//final foreach
-            
+            $('input,select').on('click',function(){$('.div-error').remove()});
             if(bandera==1){
                 
                 vj.addOnclick();
@@ -172,7 +174,17 @@ jd.validador.prototype={
             documentacion:false,
             obligatorio:false
         };
-        return $.extend(validacionesDefault,validaciones);
+        var arrayOrdenado=new Array();
+        $.each(validaciones, function(index, array) {
+            
+            if(!isNaN(index)){
+                arrayOrdenado[array]=true;
+            }else{
+                arrayOrdenado[index]=array;
+            }
+        });
+        
+        return $.extend(validacionesDefault,arrayOrdenado);
         
     },
     validarCampo : function(idCampo,validaciones){
@@ -199,8 +211,6 @@ jd.validador.prototype={
         }
         //----------------------------------------------------------
         $.each(arrayValidaciones,function(validacion,parametros){
-            typeof(parametros);
-            
             mensaje = (typeof(parametros.mensaje)!="undefined")?parametros.mensaje:"";
             //Solo se ejecuta si la validación está activada para el campo y si no hay
             if(parametros!==false && bandera==0 && validacion!='obligatorio'){
@@ -340,11 +350,13 @@ jd.validador.prototype={
         var resp = new Array();
         var condicion=true;
         if(arr.condicional){
-            
+                console.log(arr.condicional);
                 var valor;
                 if(arr.tipo && arr.tipo=="radio"){
-                        nombreCampo = $("#"+arr.condicional).attr('name');
+                      nombreCampo = $("#"+arr.condicional).attr('name');
+                      console.log(nombreCampo);
                       valor = $("input[name="+nombreCampo+"]:checked").val();
+                      console.log(valor);
                       //console.log(arr.condicional+ " el valor condicional es "+ valor + " y la condicion "+arr.condicion);
                     }else{
                       valor = $("#"+arr.condicional).val();
@@ -363,6 +375,8 @@ jd.validador.prototype={
                 switch (tipoCampo){
                     case 'RADIO':
                     case 'radio':
+                    case 'checkbox':
+                    case 'CHECKBOX':
                         nombreCampo = $(campo).attr('name');
                         resp.radio=true;
                         if($("input[name="+nombreCampo+"]:checked").length>0){
