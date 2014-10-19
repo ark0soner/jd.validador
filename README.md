@@ -75,7 +75,7 @@ new jd.validador("idBoton",{
 								"mensaje":"El apellido solo puede llevar caracteres"
 							}
 				},
-	'correo' 
+	'correo' :['email']
 	});
 ```
 
