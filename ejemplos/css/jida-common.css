@@ -1,0 +1,160 @@
+/* Codigo necesario para footer 
+ * 
+ * el margin negativo del all-container debe ser igual al heigth del footer
+ *  */
+html,
+body {
+   height: 100%;
+   
+}
+textarea{
+	resize: none;
+}
+
+.all-container{
+	min-height: 100%;
+	height: auto !important;
+	height: 100%;
+	/* Negative indent footer by it's height */
+    margin: 0 auto -100px;
+}
+.separador-footer{
+	margin-top:50px;
+	height: 100px;	
+	clear: both;
+}
+
+.down-line{
+	border-bottom:1px rgba(230,230,230,1) solid !important;
+}
+/* Fin de código para footer*/
+
+
+.test{
+	font-size:19px;
+}
+
+.pad10{
+	padding-top:12px;
+	padding-bottom:8px;
+}
+.top-15{
+	margin-top:15px;
+}
+
+.top-30{
+	margin-top:30px;
+}
+.top-60{
+	margin-top:60px;
+	margin-bottom:60px;
+}
+a{
+	cursor: pointer;
+}
+
+  
+ .circle{
+ 	border-radius: 50%;
+ 	
+ }
+ 
+ 
+.no-container-left{
+	padding-left: -15px!important;
+}
+.no-container-right{
+	padding-right: -15px!important;
+}
+.no-container{
+	padding:auto -15px!important;
+}
+
+
+/*Controles compuestos de formularios*/
+.div-error{
+	
+}
+.control-multiple{
+    position:relative;
+}
+select.ctrl-documentacion{
+	width: 80px!important;
+	min-width: 60px;
+	position:absolute;
+}
+select.ctrl-documentacion + .form-control{
+    padding-left:90px!important;	
+}
+div.ctrl-number{
+	
+	display: inline;
+	width: 20%!important;	
+	padding:6px 12px;
+}
+
+input.ctrl-number-code{
+	width: 80px!important;
+	min-width: 50px!important;
+	position:absolute;
+}
+input.ctrl-number-code + input[type=text]{
+    padding-left:90px;
+	margin-right:0%;
+}
+
+.radio-on-list{
+position:absolute;
+	margin-top:30px;
+}
+
+
+.box-140{
+    width: 140px;height: 140px;   
+}
+a > img{
+    opacity: .8;   
+}
+a:hover > img{
+    opacity:1;
+}
+
+
+
+
+ .div-error{
+	font-size: 10px;
+	position: absolute;
+	z-index: 99999;
+	background-color: lightblue;
+	color: #FFF;
+	max-width: 95%;
+	padding: 10px 8px;
+	text-align: justify;
+    margin-left:5px;
+    margin-top:-62px;    
+   	float:left;
+	border-radius: 3px;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;	
+}
+.div-error:after {
+	position: absolute;
+    content:"";
+    display:block;	
+	width: 0;
+	height: 0;
+	line-height: 0;
+	border: 10px dashed lightblue;
+	border-radius: 3px;
+	bottom: 0;
+	top: 32px;
+	left: 40px;
+	border-top-style: solid;
+	border-bottom: none;
+	border-left-color: transparent;
+	border-right-color: transparent;	
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+    
+}
