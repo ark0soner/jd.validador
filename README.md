@@ -61,7 +61,7 @@ Parametros		| Detalle
  **options**	| JSON con opciones de validacion
  **funcionPrevia** | [opcional] Nombre de función o funcion lambda a ejecutar antes de que se ejecute el validador
  **callback** 	| [opcional] Función a ejecutar posterior a que se ejecute el validador
- **funcionError	| [opcional] Permite personalizar una función para mostrar los errores.
+ **funcionError**	| [opcional] Permite personalizar una función para mostrar los errores.
 
 ## JSON Options
 

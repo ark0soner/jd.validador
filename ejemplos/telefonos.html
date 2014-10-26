@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="es">
+	<head>
+		<meta charset="utf-8">
+
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+		<title>Teléfonos</title>
+		<meta name="description" content="Ejemplo del validador Jida">
+		<meta name="author" content="ark0soner">
+		<meta name="viewport" content="width=device-width; initial-scale=1.0">
+		<link rel="stylesheet" href="css/bootstrap.css"/>
+		<link rel="stylesheet" href="css/jida-common.css"/>
+	</head>
+
+	<body>
+		<div class="container">
+			
+			<div class="col-md-6 col-md-offset-3">
+				<h1>
+					validadorJida.js
+					<small>Validando Tel&eacute;fonos </small>
+				</h1>
+				<div id="msj"></div>
+				
+				<form role="form" id="form" method="post" action="#">
+					
+					<div class="form-group">
+						<label for="telefono">Tel&eacute;fono Local</label>
+						<input type="text" class="form-control" id="telefono" placeholder="000-0000000" maxlength="10">
+				  	</div>
+				  	<div class="form-group">
+						<label for="celular">Celular</label>
+						<input type="text" class="form-control" id="celular" placeholder="000-0000000"  maxlength="10">
+				  	</div>
+					<div class="form-group">
+						<label for="telfMultiple">Multiple</label>
+						<input type="text" class="form-control" id="telfMultiple" placeholder="000-0000000"  maxlength="10">
+				  	</div>
+					<div class="form-group">
+					  	<div id="boxphone" class="ctrl-multiple">
+						  	<input type="text" placeholder="4xx." maxlength="3" name="phone-codigo" style="width:55px" data-jidacontrol="numerico" class="ctrl-number-code form-control" value="" id="phone-codigo" title="Código sin cero(0) inicial">
+						  	<input type="text" maxlength="7" placeholder="Tu teléfono de contacto" data-jidacontrol="numerico" class="form-control" id="phone" name="telefono">
+			  			</div>
+			  		</div>
+			  	
+					<button type="button" class="btn btn-default pull-right" id="validarForm"> Validar</button>
+				</form>
+				<div class="row">
+					<div class="col-md-12 top-30">
+						<div class="alert alert-info">
+							Las validaciones para tel&eacute;fonos están realizadas para formato de venezuela principalmente,
+							si se desea hacer un ajuste, se puede acceder al archivo y editar el array <strong>jd.validaciones</strong>
+							los keys telefono y celular respectivamente
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+		<script src="../js/validadorJida.js"></script>
+		<script>
+		$( document ).ready(function(){
+		 	new jd.validador('validarForm',{
+								'telefono':{
+											'obligatorio':{"mensaje":"Ingresa un telefono"},
+											'telefono':{
+												'mensaje':"El teléfono no es valido. El formato debe ser 212 444 44 44"
+											}
+								},
+								'celular':{
+									'obligatorio':{"mensaje":"Ingresa un telefono"},
+									'telefono':{
+										"mensaje":"El formato del celular no es valido, debe ser 412,414,416,424 O 426",
+										"tipo":"celular",
+									},
+								},
+								'telfMultiple':{
+									'obligatorio':{"mensaje":"Ingresa un telefono"},
+									'telefono':{
+										"mensaje":"Formato invalido",
+										"tipo":"multiple",
+									},
+								},
+								'phone':{
+									'obligatorio':{"mensaje":"Ingresa un telefono"},
+									'telefono':{
+										"tipo":"multiple",
+										"code":true //Valida un campo adicional q debe tener el mismo id q el campo del telefono seguido de "-codigo"
+									}
+									
+								}
+		 					},
+		 					function(){
+		 						msj = '<div class="alert alert-info"> Va a comenzar la validaci&oacute;n</div>'
+		 						$("#msj").html(msj).fadeIn();
+		 						//para que el validador se ejecute debe devolver true
+		 						return true;
+		 					},
+		 					//funcion callback
+		 					function(validacion){
+		 						msj = '<div class="alert alert-success"> El formulario se ha validado exitosamente</div>'
+		 						$("#msj").html("").fadeOut(100,function(){$( this ).html(msj).fadeIn()});
+		 					});
+		});
+		</script>
+	</body>
+</html>

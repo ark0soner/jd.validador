@@ -69,7 +69,11 @@
 				  <div class="form-group">
 					    <label for="montoPago">Monto de pago</label>
 					    <input type="text" class="form-control" id="montoPago" placeholder="Monto del pago">
-				  	</div>
+				  </div>
+				  <div class="form-group">
+					    <label for="montoPago">Tel&eacute;fono</label>
+					    <input type="text" class="form-control" id="telefono" placeholder="000-0000000">
+				  </div>
 				  <button type="submit" class="btn btn-default" id="validarForm"> Validar</button>
 					</form>
 				
@@ -101,6 +105,12 @@
 														},
 												'decimal':{"mensaje":"El monto pagado debe ser númerico"}
 											},
+								'telefono':{
+											'telefono':{
+												'mensaje':"El teléfono no es valido"
+											}
+									
+								},
 		 					});
 		});
 		</script>
