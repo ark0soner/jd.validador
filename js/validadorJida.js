@@ -9,10 +9,10 @@
  * @version 1.3.1
  *  */
 
-
 if(typeof(jd)=='undefined'){
     jd = function(){return true;};
-    }
+}
+
 /**
  * Json con validaciones disponibles, cada validación contiene la expresión regular para ejecutarse
  * y un mensaje generico.
@@ -81,6 +81,18 @@ jd.validador = function(boton,options,funcionPrevia,callback,funcionError){
     this.cssError = "div-error";
     this.funcionError = funcionError;
     /**
+     * Div utilizado de referencia para mostrar el mensaje, por defecto el mensaje de error
+     * será agregado antes (funcion jquery .before()) del div o campo indicado
+     * Si se desea modificar el comportamiento por defecto y que el msj sea agregado dentro del div indicado
+     * se debe modificar la propiedad vj.msjBefore a true
+     */
+    this.divMsjError;
+    /**
+     * Usado para función de msj por defecto, si es colocado en false el msj
+     * sera mostrado como html del divMsjError 
+     */
+    this.msjBefore = true;
+    /**
      * Alias para atributo "this" padre, iniciales del validadorJida
      * @var vj
      */
@@ -116,6 +128,10 @@ jd.validador.prototype={
          * presenta algún error.
          */
         bandera =0;
+        $("input, select, textarea").on('click',function(){
+            
+            $("."+vj.cssError).remove();
+        });
         //validar función previa 
         if(vj.validarFuncionPrevia()){
             vj.eliminarMensajes(event);
@@ -128,20 +144,20 @@ jd.validador.prototype={
                 //Se crea id en connotación para jquery
                 if(bandera==0){
                     var idCampo = "#"+campo;
-                    
+                    vj.divMsjError = idCampo;
                     if($( idCampo ).size()>0){
                         //Se creará la validación solo si el campo existe.
                         respuesta = vj.validarCampo(idCampo,arrayValidaciones);
                         if(respuesta.val==false){
                             bandera=1;
-                            vj.mostrarMensajeError(idCampo,respuesta.mensaje);   
+                            vj.mostrarMensajeError(idCampo,respuesta.mensaje,vj.divMsjError,vj.msjBefore);   
                         }    
                     }
                         
                 }
                 
             });//final foreach
-            $('input,select').on('click',function(){$('.div-error').remove()});
+            
             if(bandera==1){
                 
                 vj.addOnclick();
@@ -174,17 +190,7 @@ jd.validador.prototype={
             documentacion:false,
             obligatorio:false
         };
-        var arrayOrdenado=new Array();
-        $.each(validaciones, function(index, array) {
-            
-            if(!isNaN(index)){
-                arrayOrdenado[array]=true;
-            }else{
-                arrayOrdenado[index]=array;
-            }
-        });
-        
-        return $.extend(validacionesDefault,arrayOrdenado);
+        return $.extend(validacionesDefault,validaciones);
         
     },
     validarCampo : function(idCampo,validaciones){
@@ -211,6 +217,8 @@ jd.validador.prototype={
         }
         //----------------------------------------------------------
         $.each(arrayValidaciones,function(validacion,parametros){
+            typeof(parametros);
+            
             mensaje = (typeof(parametros.mensaje)!="undefined")?parametros.mensaje:"";
             //Solo se ejecuta si la validación está activada para el campo y si no hay
             if(parametros!==false && bandera==0 && validacion!='obligatorio'){
@@ -333,6 +341,7 @@ jd.validador.prototype={
      */
     eliminarMensajes:function(){
         $("."+this.cssError).remove();
+        
     },
     
     /**
@@ -350,19 +359,15 @@ jd.validador.prototype={
         var resp = new Array();
         var condicion=true;
         if(arr.condicional){
-                console.log(arr.condicional);
+            
                 var valor;
                 if(arr.tipo && arr.tipo=="radio"){
-                      nombreCampo = $("#"+arr.condicional).attr('name');
-                      console.log(nombreCampo);
+                        nombreCampo = $("#"+arr.condicional).attr('name');
                       valor = $("input[name="+nombreCampo+"]:checked").val();
-                      console.log(valor);
-                      //console.log(arr.condicional+ " el valor condicional es "+ valor + " y la condicion "+arr.condicion);
                     }else{
                       valor = $("#"+arr.condicional).val();
                     }
                 if(valor==arr.condicion){
-                    //console.log(arr.condicional+ " debes llenarlo "+ valor+" == "+arr.condicion+" en campo "+campo);
                     condicion=true;
                 }else{
                    condicion=false;
@@ -375,8 +380,6 @@ jd.validador.prototype={
                 switch (tipoCampo){
                     case 'RADIO':
                     case 'radio':
-                    case 'checkbox':
-                    case 'CHECKBOX':
                         nombreCampo = $(campo).attr('name');
                         resp.radio=true;
                         if($("input[name="+nombreCampo+"]:checked").length>0){
@@ -421,7 +424,7 @@ jd.validador.prototype={
         }else{
             
             return true;
-        }//fin validacion vacioconsole.log(vj.onclick+" ak");
+        }//fin validacion
         
     },
     telefono:function(id,validacion,parametros){
@@ -431,10 +434,12 @@ jd.validador.prototype={
         var expresionTlf=jd.validaciones['telefono'].expr;
         var expresionCel=jd.validaciones['celular'].expr;
         var expresionInter=jd.validaciones['internacional'].expr;
+        
         var valorCampo = $( id ).val();
         
         if(parametros.code){
             codigo = $(id+"-codigo").val();
+            vj.divMsjError  = "#box"+jd.replaceAll(id,"#","");
         } 
         if(parametros.ext){
             totalDigitos+=4;
@@ -442,7 +447,6 @@ jd.validador.prototype={
         }
 
         valorCampo = codigo+valorCampo+extension;
-        //console.log(valorCampo);
         if(valorCampo!=""){
             
         
@@ -518,14 +522,21 @@ jd.validador.prototype={
     
             
     },//final funcion tiny
-    mostrarMensajeError:function(campo,mensaje){
+    mostrarMensajeError:function(campo,mensaje,divError,before){
+        before = (before)?true:false;
+        
         if(vj.funcionError){
             vj.funcionError.call(this,campo,mensaje);
         }else{
             $(window).scrollTop($(campo).offset().top - 150);
             $(campo).focus();
-            //$( campo ).attr('placeholder',mensaje).addClass('has-success');
-            $(campo).before("<div class=\""+this.cssError+"\">"+mensaje+"</div>");    
+            
+            if(divError){
+                $(divError).before("<div class=\""+this.cssError+"\">"+mensaje+"</div>");    
+            }else{
+                $(divError).html("<div class=\""+this.cssError+"\">"+mensaje+"</div>");
+            }
+                
         }
         
         
